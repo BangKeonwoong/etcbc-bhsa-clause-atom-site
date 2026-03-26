@@ -1,0 +1,86 @@
+name: Build site data
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Text-Fabric app name
+        required: false
+        default: ETCBC/bhsa
+        type: string
+      resources:
+        description: ResourceTables source
+        required: false
+        default: :official_seed
+        type: string
+      top_k:
+        description: Number of candidates to materialize
+        required: false
+        default: "5"
+        type: string
+      outdir:
+        description: Output directory
+        required: false
+        default: site/data
+        type: string
+      books:
+        description: Optional comma-separated book filter
+        required: false
+        default: ""
+        type: string
+      limit:
+        description: Optional clause-atom limit
+        required: false
+        default: ""
+        type: string
+      pool_mode:
+        description: Candidate pool pruning mode
+        required: false
+        default: instruction
+        type: choice
+        options:
+          - instruction
+          - tab_only
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-bhsa.txt
+
+      - name: Build site data
+        run: |
+          set -euo pipefail
+          args=(
+            --app "${{ inputs.app }}"
+            --resources "${{ inputs.resources }}"
+            --top-k "${{ inputs.top_k }}"
+            --outdir "${{ inputs.outdir }}"
+            --pool-mode "${{ inputs.pool_mode }}"
+          )
+          if [ -n "${{ inputs.books }}" ]; then
+            args+=(--books "${{ inputs.books }}")
+          fi
+          if [ -n "${{ inputs.limit }}" ]; then
+            args+=(--limit "${{ inputs.limit }}")
+          fi
+          python scripts/build_site_data.py "${args[@]}"
+
+      - name: Upload generated site data
+        uses: actions/upload-artifact@v4
+        with:
+          name: bhsa-site-data
+          path: ${{ inputs.outdir }}

@@ -1,0 +1,27 @@
+.venv/
+.venv-*/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store
+
+# BHSA / Text-Fabric build outputs
+outputs/
+outputs_*/
+synthetic_smoke_outputs/
+synthetic_smoke_outputs_*/
+site/data/
+dist/
+build/
+
+# Local scratch files
+*.log
+*.tmp
+
+# Session bundle artifacts
+session_bundle_manifest.json
+session_bundle_readme.md
+session_transcript.md

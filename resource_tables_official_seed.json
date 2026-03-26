@@ -1,0 +1,81 @@
+{
+  "arg_weights": {},
+  "quote_verbs": [
+    ">MR[",
+    "DBR[",
+    "NGD["
+  ],
+  "object_clause_governors": [
+    ">MR[",
+    "CM<[",
+    "DBR[",
+    "JD<[",
+    "NGD[",
+    "R>H["
+  ],
+  "subject_clause_governors": [],
+  "predicative_clause_governors": [],
+  "conjunction_classes": {
+    ">W": "coord",
+    "W": "coord",
+    ">CR": "postulational",
+    "DJ": "postulational",
+    "H": "postulational",
+    "ZW": "postulational",
+    "KJ": "postulational",
+    "C": "postulational",
+    ">LW": "conditional",
+    ">M": "conditional",
+    "HN": "conditional",
+    "LHN=": "conditional",
+    "LW": "conditional",
+    "LWL>": "conditional",
+    "PN": "final"
+  },
+  "preposition_classes": {
+    ">XR/": "temporal_700",
+    ">L": "temporal_700",
+    "B": "temporal_700",
+    "BMW": "temporal_700",
+    "VRM/": "temporal_700",
+    "K": "temporal_700",
+    "KMW": "temporal_700",
+    "L": "temporal_700",
+    "LMW": "temporal_700",
+    "<D": "temporal_700",
+    "BLT/": "temporal_800",
+    "BLTJ/": "temporal_800",
+    "ZWLH/": "temporal_800",
+    "LM<N": "temporal_800",
+    "MN": "temporal_800",
+    "J<N/": "causal_900",
+    "<L": "causal_900",
+    "<QB/": "causal_900"
+  },
+  "infinitive_preposition_classes": {
+    ">XR/": 1,
+    ">L": 2,
+    ">YL/": 3,
+    ">T": 4,
+    "B": 5,
+    "BMW": 5,
+    "BJN/": 6,
+    "BL<DJ": 7,
+    "B<D/": 9,
+    "ZWLH/": 10,
+    "J<N/": 11,
+    "K": 12,
+    "KMW": 12,
+    "L": 14,
+    "LMW": 14,
+    "LM<N": 15,
+    "MN": 17,
+    "<D": 20,
+    "<L": 21,
+    "<M": 22,
+    "TXT/": 24
+  },
+  "relative_lexemes": [
+    ">CR"
+  ]
+}

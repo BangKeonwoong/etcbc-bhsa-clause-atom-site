@@ -1,0 +1,16 @@
+{
+  "arg_weights": {},
+  "quote_verbs": [
+    ">MR[",
+    "DBR["
+  ],
+  "object_clause_governors": [],
+  "subject_clause_governors": [],
+  "predicative_clause_governors": [],
+  "conjunction_classes": {
+    "W": "coord",
+    ">W": "coord"
+  },
+  "preposition_classes": {},
+  "relative_lexemes": []
+}

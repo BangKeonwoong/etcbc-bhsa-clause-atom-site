@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>BHSA clause atom mother candidate</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">BHSA / clause atom browser</p>
+          <h1>어미절 후보 조회기</h1>
+          <p class="lead">
+            clause atom 하나를 선택하면, 현재 엔진이 예측한 mother candidate와 근거를 바로 확인할 수 있습니다.
+          </p>
+        </div>
+        <div class="hero-card" id="meta-card" aria-live="polite">
+          <p class="hero-label">빌드 정보</p>
+          <p class="hero-value" id="meta-status">데이터를 불러오는 중...</p>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel controls">
+          <div class="control-row">
+            <label>
+              <span>책</span>
+              <select id="book-select"></select>
+            </label>
+            <label class="atom-input">
+              <span>clause atom ID</span>
+              <input id="atom-input" type="number" min="1" inputmode="numeric" placeholder="예: 12345" />
+            </label>
+          </div>
+          <div class="button-row">
+            <button id="prev-button" type="button">이전</button>
+            <button id="next-button" type="button">다음</button>
+            <button id="open-button" type="button" class="primary">열기</button>
+          </div>
+          <p class="status" id="status-line">검색할 clause atom ID를 입력하세요.</p>
+        </section>
+
+        <section class="panel explorer">
+          <aside class="atom-list-pane">
+            <div class="pane-header">
+              <h2>현재 책의 clause atom</h2>
+              <p id="book-summary">-</p>
+            </div>
+            <div id="atom-list" class="atom-list" aria-live="polite"></div>
+          </aside>
+
+          <article class="detail-pane">
+            <div class="detail-header">
+              <div>
+                <p class="detail-eyebrow">선택된 clause atom</p>
+                <h2 id="detail-title">아직 선택되지 않았습니다</h2>
+              </div>
+              <div id="detail-badges" class="badge-row"></div>
+            </div>
+
+            <section class="detail-card">
+              <p class="detail-label">본문</p>
+              <p id="detail-text" class="detail-text">책과 atom을 선택하면 본문이 표시됩니다.</p>
+            </section>
+
+            <section class="detail-grid">
+              <div class="mini-card">
+                <p class="detail-label">관계</p>
+                <p id="detail-meta">-</p>
+              </div>
+              <div class="mini-card">
+                <p class="detail-label">Gold mother</p>
+                <p id="detail-gold">-</p>
+              </div>
+            </section>
+
+            <section class="detail-card">
+              <p class="detail-label">Phrase View</p>
+              <div id="phrase-list" class="phrase-list"></div>
+            </section>
+
+            <section class="detail-card">
+              <p class="detail-label">Candidates</p>
+              <div id="candidate-list" class="candidate-list"></div>
+            </section>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
