@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <title>BHSA Clause Atom Observatory</title>
+    <title>BHSA 절원자 어미절 후보 관측소</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,28 +19,28 @@
     <div class="page-shell">
       <header class="masthead">
         <section class="panel panel-dark masthead-copy">
-          <p class="section-label">BHSA / Clause Atom Observatory</p>
+          <p class="section-label">BHSA / 절원자 어미절 후보 관측소</p>
           <h1>어미절 후보 관측소</h1>
           <p class="lead">
-            clause atom의 본문, 구조 표식, mother candidate ranking을 한 화면에서 읽는 정적 연구용 브라우저입니다.
+            절원자(clause atom)의 본문, 구조 표식, 어미절 후보 순위를 한 화면에서 읽는 정적 연구용 브라우저입니다.
           </p>
           <div class="intro-notes">
-            <span class="intro-chip">Static JSON</span>
-            <span class="intro-chip">Clause Anatomy</span>
-            <span class="intro-chip">Evidence-first Ranking</span>
+            <span class="intro-chip">정적 JSON</span>
+            <span class="intro-chip">절 구조</span>
+            <span class="intro-chip">근거 중심 순위</span>
           </div>
         </section>
 
         <div class="masthead-stack">
           <section class="panel meta-panel" id="meta-card" aria-live="polite">
-            <p class="section-label">Build status</p>
+            <p class="section-label">빌드 정보</p>
             <p class="meta-value" id="meta-status">데이터를 불러오는 중...</p>
           </section>
           <section class="panel meta-panel meta-panel-note">
-            <p class="section-label">Reading mode</p>
+            <p class="section-label">사용 안내</p>
             <p class="meta-copy">
-              왼쪽에서 책별 atom 흐름을 잡고, 가운데에서 본문과 clause profile을 읽은 뒤, 오른쪽에서 후보 점수와
-              evidence를 비교합니다.
+              왼쪽에서 책별 절원자 흐름을 잡고, 가운데에서 본문과 절 표식 요약을 읽은 뒤, 오른쪽에서 후보 점수와
+              근거를 비교합니다.
             </p>
           </section>
         </div>
@@ -53,7 +53,7 @@
             <select id="book-select"></select>
           </label>
           <label class="field field-wide atom-input">
-            <span class="field-label">Clause atom ID</span>
+            <span class="field-label">절원자 ID</span>
             <input id="atom-input" type="number" min="1" inputmode="numeric" placeholder="예: 12345" />
           </label>
           <div class="button-row">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="command-footer">
-          <p class="status-line" id="status-line">검색할 clause atom ID를 입력하세요.</p>
+          <p class="status-line" id="status-line">검색할 절원자 ID를 입력하세요.</p>
           <div class="command-tags">
             <span class="command-tag" id="book-summary">-</span>
           </div>
@@ -73,9 +73,9 @@
       <main class="workspace">
         <aside class="panel rail rail-navigation">
           <div class="rail-header">
-            <p class="section-label">Book ledger</p>
-            <h2>Clause atom index</h2>
-            <p class="rail-copy">현재 선택한 책의 atom들을 순서대로 훑으면서 top prediction과 본문 조각을 빠르게 확인합니다.</p>
+            <p class="section-label">책별 목록</p>
+            <h2>절원자 목록</h2>
+            <p class="rail-copy">현재 선택한 책의 절원자를 순서대로 훑으면서 1위 예측과 본문 조각을 빠르게 확인합니다.</p>
           </div>
           <div id="atom-list" class="atom-list" aria-live="polite"></div>
         </aside>
@@ -84,28 +84,28 @@
           <article class="panel folio">
             <div class="folio-header">
               <div>
-                <p class="section-label">Selected atom</p>
+                <p class="section-label">선택된 절원자</p>
                 <h2 id="detail-title">아직 선택되지 않았습니다</h2>
-                <p id="detail-location" class="detail-location">책과 atom을 선택하면 본문과 구조 정보가 표시됩니다.</p>
+                <p id="detail-location" class="detail-location">책과 절원자를 선택하면 본문과 구조 정보가 표시됩니다.</p>
               </div>
               <div id="detail-badges" class="badge-row"></div>
             </div>
 
             <section class="text-stage">
-              <p id="detail-text" class="detail-text">선택된 clause atom의 본문이 여기에 표시됩니다.</p>
+              <p id="detail-text" class="detail-text">선택된 절원자의 본문이 여기에 표시됩니다.</p>
             </section>
 
             <section class="insight-grid">
               <article class="signal-card">
-                <p class="section-label">Gold mother</p>
+                <p class="section-label">정답 어미절</p>
                 <p id="detail-gold" class="signal-emphasis">-</p>
               </article>
               <article class="signal-card">
-                <p class="section-label">Top hypothesis</p>
+                <p class="section-label">최상위 예측</p>
                 <p id="detail-summary" class="signal-emphasis">-</p>
               </article>
               <article class="signal-card">
-                <p class="section-label">Clause profile</p>
+                <p class="section-label">절 표식 요약</p>
                 <div id="detail-flags" class="flag-list"></div>
               </article>
             </section>
@@ -115,10 +115,10 @@
             <article class="panel structure-card">
               <div class="block-header">
                 <div>
-                  <p class="section-label">Predicate and markers</p>
-                  <h3>Clause anatomy</h3>
+                  <p class="section-label">서술어와 표식</p>
+                  <h3>절 구조</h3>
                 </div>
-                <p id="predicate-summary" class="block-note">predicate와 phrase 그룹이 여기에 표시됩니다.</p>
+                <p id="predicate-summary" class="block-note">서술어 정보와 구문 그룹이 여기에 표시됩니다.</p>
               </div>
               <div id="predicate-card" class="predicate-card"></div>
               <div id="phrase-groups" class="phrase-groups"></div>
@@ -127,39 +127,39 @@
             <article class="panel structure-card structure-card-secondary">
               <div class="block-header">
                 <div>
-                  <p class="section-label">Context strip</p>
-                  <h3>Reading notes</h3>
+                  <p class="section-label">탐색 메모</p>
+                  <h3>읽기 메모</h3>
                 </div>
-                <p class="block-note">탐색 상태와 clause context를 압축해서 보여줍니다.</p>
+                <p class="block-note">탐색 상태와 절 문맥을 압축해서 보여줍니다.</p>
               </div>
               <div class="context-grid">
                 <div class="context-item">
-                  <span class="context-label">Location</span>
+                  <span class="context-label">위치</span>
                   <strong id="detail-context-location">-</strong>
                 </div>
                 <div class="context-item">
-                  <span class="context-label">Pool</span>
+                  <span class="context-label">후보군</span>
                   <strong id="detail-context-pool">-</strong>
                 </div>
                 <div class="context-item">
-                  <span class="context-label">Prev / Next</span>
+                  <span class="context-label">이전 / 다음</span>
                   <strong id="detail-context-nav">-</strong>
                 </div>
                 <div class="context-item">
-                  <span class="context-label">Top-k</span>
+                  <span class="context-label">상위 후보 수</span>
                   <strong id="detail-context-topk">-</strong>
                 </div>
               </div>
-              <p id="detail-context-note" class="context-note">선택된 atom의 세부 메모가 여기에 표시됩니다.</p>
+              <p id="detail-context-note" class="context-note">선택된 절원자의 세부 메모가 여기에 표시됩니다.</p>
             </article>
           </section>
         </section>
 
         <aside class="panel rail rail-analysis">
           <div class="rail-header">
-            <p class="section-label">Candidate board</p>
-            <h2>Mother ranking</h2>
-            <p id="candidate-summary" class="rail-copy">후보가 표시되면 score, relation, evidence를 한 줄씩 비교할 수 있습니다.</p>
+            <p class="section-label">후보 비교판</p>
+            <h2>어미절 순위</h2>
+            <p id="candidate-summary" class="rail-copy">후보가 표시되면 점수, 관계, 근거를 한 줄씩 비교할 수 있습니다.</p>
           </div>
           <div id="candidate-list" class="candidate-list"></div>
         </aside>

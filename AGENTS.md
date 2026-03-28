@@ -1,61 +1,67 @@
-# BHSA UI Design Rules
+# BHSA UI 디자인 규칙
 
-These rules apply to all Figma-driven or hand-authored UI work in this repository.
+이 규칙은 이 저장소의 Figma 기반 작업과 수작업 UI 수정 모두에 적용합니다.
 
-## Project Shape
+## 프로젝트 형태
 
-- The shipped UI is a framework-free static site under `site/`.
-- Data is loaded from `site/data/catalog.json` and `site/data/atoms/<id>.json`.
-- If the data schema changes, update the Python builder, tests, and UI together. Do not silently drift the front end away from the generated JSON contract.
+- 실제 서비스 UI는 `site/` 아래의 프레임워크 없는 정적 사이트입니다.
+- 데이터는 `site/data/catalog.json` 과 `site/data/atoms/<id>.json` 에서 읽습니다.
+- 데이터 스키마가 바뀌면 Python 빌더, 테스트, UI를 함께 갱신합니다. 생성된 JSON 계약과 프런트엔드가 조용히 어긋나게 두지 않습니다.
 
-## Visual Direction
+## 언어와 카피 규칙
 
-- Treat the product as a research instrument, not a SaaS dashboard.
-- Favor a strong editorial or archival-lab feel: dark shell, warm folio surfaces, sharp sectioning, visible hierarchy.
-- The first viewport must immediately show three things:
-  - how to navigate
-  - which atom is selected
-  - what the model currently believes
-- Avoid generic card grids, pastel glassmorphism, purple gradients, and neutral enterprise layouts.
+- 사용자에게 보이는 설명은 한글 우선으로 씁니다.
+- `clause atom`, `mother candidate`, `gold`, `top-k` 같은 전문 용어만 필요한 범위에서 영어를 병기합니다.
+- 상태 메시지, 빈 상태, 오류 메시지, 패널 제목은 짧고 명확한 한글 문장으로 유지합니다.
 
-## Typography And Tokens
+## 시각 방향
 
-- Display type should feel deliberate; current direction uses `Fraunces` for titles.
-- UI text should remain dense and readable; current direction uses `IBM Plex Sans`.
-- Numeric/data labels should use a monospaced face; current direction uses `IBM Plex Mono`.
-- Keep all colors, radii, shadows, spacing, and motion values in `:root` CSS custom properties.
-- Do not hardcode one-off colors inside component rules unless there is no reusable token for that case.
+- 제품을 일반 SaaS 대시보드가 아니라 연구용 판독 도구로 다룹니다.
+- 어두운 바깥 껍질, 따뜻한 본문 면, 또렷한 구획, 강한 위계를 유지합니다.
+- 첫 화면에서는 반드시 세 가지가 바로 보여야 합니다.
+  - 어떻게 탐색하는지
+  - 어떤 절원자가 선택되었는지
+  - 모델이 현재 무엇을 가장 유력하게 보는지
+- 평범한 카드 그리드, 과한 글래스 효과, 보라색 계열 기본 그라데이션은 피합니다.
 
-## Layout Rules
+## 타이포그래피와 토큰
 
-- Preserve a three-zone reading model on desktop:
-  - left `book ledger`
-  - center `focus folio`
-  - right `candidate board`
-- The center column is the primary stage. The selected clause text must carry the strongest visual weight.
-- Phrase structure and predicate metadata belong below the main text, not buried in the side rails.
-- Candidate evidence must remain scannable at a glance; use compact ribbons, chips, or meters instead of long prose.
+- 제목용 서체는 의도적인 성격이 느껴져야 하며, 현재 방향은 `Fraunces` 입니다.
+- UI 본문은 조밀해도 읽기 쉬워야 하며, 현재 방향은 `IBM Plex Sans` 입니다.
+- 숫자와 데이터 라벨은 고정폭 계열을 사용하며, 현재 방향은 `IBM Plex Mono` 입니다.
+- 색상, 반지름, 그림자, 간격, 모션 값은 `:root` CSS 사용자 정의 속성으로 관리합니다.
+- 재사용 가능한 토큰이 있는데도 임의의 색을 개별 규칙에 직접 박아 넣지 않습니다.
 
-## Interaction Rules
+## 레이아웃 규칙
 
-- `book-select`, `atom-input`, previous/next navigation, and URL syncing are required behavior.
-- Candidate cards may link directly to the candidate mother atom when that atom exists in the current dataset.
-- Preserve clear empty, loading, and missing-data states.
-- Mobile should collapse into a single column without hiding critical evidence or navigation.
+- 데스크톱에서는 세 구역 읽기 구조를 유지합니다.
+  - 왼쪽 `책별 목록`
+  - 가운데 `본문 판독 영역`
+  - 오른쪽 `후보 비교판`
+- 가운데 열이 핵심 무대이며, 선택된 절원자 본문이 가장 강한 시각적 무게를 가져야 합니다.
+- 구문 구조와 서술어 메타데이터는 본문 아래에 두고, 옆 패널 깊숙이 숨기지 않습니다.
+- 후보 근거는 한눈에 훑을 수 있어야 하며, 긴 설명문보다 짧은 리본, 칩, 계량선 형태를 우선합니다.
 
-## Figma Workflow
+## 상호작용 규칙
 
-- Figma MCP is configured as a project tool. When it is available in the active session, use it before implementing major UI changes.
-- For Figma-to-code work, fetch design context and screenshot context first, then translate into this repository's static HTML/CSS/JS architecture.
-- Treat generated Figma code as design reference, not as final production code style.
-- The final source of truth for implementation remains:
+- `book-select`, `atom-input`, 이전/다음 이동, URL 동기화는 필수 동작입니다.
+- 후보 카드가 가리키는 어미절이 현재 데이터셋 안에 있으면 바로 열 수 있어야 합니다.
+- 빈 상태, 로딩 상태, 데이터 누락 상태를 분명하게 남겨 둡니다.
+- 모바일에서는 한 열로 접히더라도 핵심 탐색과 근거 정보가 사라지지 않아야 합니다.
+
+## Figma 작업 흐름
+
+- Figma MCP는 프로젝트 도구로 연결되어 있으며, 활성 세션에서 사용할 수 있으면 큰 UI 변경 전에 먼저 활용합니다.
+- Figma 기반 구현에서는 디자인 문맥과 스크린샷 문맥을 먼저 읽고, 그 결과를 이 저장소의 정적 HTML/CSS/JS 구조로 번역합니다.
+- Figma가 생성한 코드는 최종 스타일이 아니라 디자인 참조로 취급합니다.
+- 최종 구현의 기준 파일은 다음 세 개입니다.
   - `site/index.html`
   - `site/styles.css`
   - `site/app.js`
 
-## File Ownership
+## 파일 책임
 
-- HTML structure and semantic regions live in `site/index.html`.
-- Visual language, tokens, and responsive behavior live in `site/styles.css`.
-- Data loading, state, and rendering logic live in `site/app.js`.
-- Design rationale and future redesign guidance should be written to `design/` rather than hidden in commit messages.
+- HTML 구조와 의미 구획은 `site/index.html` 이 담당합니다.
+- 시각 언어, 토큰, 반응형 규칙은 `site/styles.css` 가 담당합니다.
+- 데이터 로딩, 상태, 렌더링 로직은 `site/app.js` 가 담당합니다.
+- 디자인 근거와 이후 리디자인 지침은 커밋 메시지에 숨기지 말고 `design/` 아래 문서로 남깁니다.

@@ -46,15 +46,15 @@ function candidateLabel(candidate) {
   const parts = [];
   if (candidate.predicted_rela) parts.push(candidate.predicted_rela);
   if (candidate.predicted_sub2 && candidate.predicted_sub2 !== ".") parts.push(candidate.predicted_sub2);
-  if (candidate.parallel) parts.push("parallel");
-  if (candidate.quotation) parts.push("quotation");
-  return parts.length ? parts : ["no relation"];
+  if (candidate.parallel) parts.push("병렬");
+  if (candidate.quotation) parts.push("인용");
+  return parts.length ? parts : ["관계 없음"];
 }
 
 async function fetchJson(path) {
   const response = await fetch(dataUrl(path), { cache: "no-cache" });
   if (!response.ok) {
-    throw new Error(`Failed to load ${path}: ${response.status}`);
+    throw new Error(`${path} 로드 실패: ${response.status}`);
   }
   return response.json();
 }
@@ -142,14 +142,14 @@ function renderBookList(bookSlug, activeId = null) {
   clearElement(els.atomList);
 
   if (!atoms.length) {
-    renderStatusBlock(els.atomList, "이 책에 표시할 atom이 없습니다.");
+    renderStatusBlock(els.atomList, "이 책에 표시할 절원자가 없습니다.");
     els.bookSummary.textContent = "-";
     return;
   }
 
   const firstAtom = atoms[0]?.atom ?? atoms[0]?.daughter;
   const lastAtom = atoms[atoms.length - 1]?.atom ?? atoms[atoms.length - 1]?.daughter;
-  els.bookSummary.textContent = `${book?.book ?? "-"} · ${fmtNumber(book?.atom_count ?? atoms.length)} atoms · ${firstAtom ?? "-"}-${lastAtom ?? "-"}`;
+  els.bookSummary.textContent = `${book?.book ?? "-"} · ${fmtNumber(book?.atom_count ?? atoms.length)}개 절원자 · ${firstAtom ?? "-"}-${lastAtom ?? "-"}`;
 
   for (const atom of atoms) {
     const button = document.createElement("button");
@@ -163,7 +163,7 @@ function renderBookList(bookSlug, activeId = null) {
     header.className = "atom-item-head";
 
     const atomLabel = document.createElement("strong");
-    atomLabel.textContent = `atom ${atomId}`;
+    atomLabel.textContent = `절원자 ${atomId}`;
 
     const section = document.createElement("span");
     section.textContent = sectionLabel(atom.section);
@@ -179,12 +179,12 @@ function renderBookList(bookSlug, activeId = null) {
     const prediction = atom.top_prediction;
     if (prediction) {
       footer.append(
-        makeToken(`m ${prediction.mother}`, "mini-badge"),
-        makeToken(prediction.predicted_rela ?? "relation ?", "mini-badge"),
+        makeToken(`어미 ${prediction.mother}`, "mini-badge"),
+        makeToken(prediction.predicted_rela ?? "관계 미상", "mini-badge"),
         makeToken(scoreLabel(prediction.score), "mini-badge"),
       );
     } else {
-      footer.append(makeToken("no prediction", "mini-badge"));
+      footer.append(makeToken("예측 없음", "mini-badge"));
     }
 
     button.append(header, snippet, footer);
@@ -201,15 +201,15 @@ function renderFlags(atom) {
     view.typ ? `typ ${view.typ}` : null,
     view.sub1 ? `sub1 ${view.sub1}` : null,
     view.sub2 && view.sub2 !== "." ? `sub2 ${view.sub2}` : null,
-    view.instruction ? `instr ${view.instruction}` : null,
-    view.explicit_subject ? "explicit subject" : null,
-    view.has_fronting ? "fronting" : null,
-    view.has_vocative ? "vocative" : null,
-    view.question_marked ? "question" : null,
-    view.relative_marker ? "relative marker" : null,
-    view.quote_verb ? "quote verb" : null,
-    view.coordinating_conjunction ? `coord ${view.coordinating_conjunction}` : null,
-    view.subordinating_conjunction ? `subord ${view.subordinating_conjunction}` : null,
+    view.instruction ? `지시 ${view.instruction}` : null,
+    view.explicit_subject ? "명시적 주어" : null,
+    view.has_fronting ? "전위" : null,
+    view.has_vocative ? "호격" : null,
+    view.question_marked ? "의문 표지" : null,
+    view.relative_marker ? "관계 표지" : null,
+    view.quote_verb ? "인용 동사" : null,
+    view.coordinating_conjunction ? `등위 ${view.coordinating_conjunction}` : null,
+    view.subordinating_conjunction ? `종속 ${view.subordinating_conjunction}` : null,
   ].filter(Boolean);
 
   if (!flags.length) {
@@ -241,7 +241,7 @@ function renderPredicate(view) {
     : [];
 
   if (!metrics.length) {
-    renderStatusBlock(els.predicateCard, "predicate 정보가 없습니다.");
+    renderStatusBlock(els.predicateCard, "서술어 정보가 없습니다.");
   } else {
     for (const [label, value] of metrics) {
       const tile = document.createElement("div");
@@ -258,7 +258,7 @@ function renderPredicate(view) {
   }
 
   const summaryParts = [
-    view?.predicate?.lex ? `predicate ${view.predicate.lex}` : "predicate -",
+    view?.predicate?.lex ? `서술어 ${view.predicate.lex}` : "서술어 -",
     view?.tab ? `tab ${view.tab}` : null,
     view?.sub1 ? `sub1 ${view.sub1}` : null,
     view?.sub2 && view.sub2 !== "." ? `sub2 ${view.sub2}` : null,
@@ -274,15 +274,15 @@ function renderPhraseGroups(view) {
   const groupedIds = new Set([...opening, ...preverbal, ...postverbal].map((phrase) => phrase.node));
   const other = (view?.phrases ?? []).filter((phrase) => !groupedIds.has(phrase.node));
   const groups = [
-    ["Opening phrases", opening],
-    ["Preverbal phrases", preverbal],
-    ["Postverbal phrases", postverbal],
-    ["Other phrases", other],
+    ["도입 구", opening],
+    ["서술어 앞 구", preverbal],
+    ["서술어 뒤 구", postverbal],
+    ["기타 구", other],
   ];
 
   const visibleGroups = groups.filter(([, phrases]) => phrases.length);
   if (!visibleGroups.length) {
-    renderStatusBlock(els.phraseGroups, "표시할 phrase 그룹이 없습니다.");
+    renderStatusBlock(els.phraseGroups, "표시할 구문 그룹이 없습니다.");
     return;
   }
 
@@ -299,7 +299,7 @@ function renderPhraseGroups(view) {
 
     const count = document.createElement("span");
     count.className = "metric-value";
-    count.textContent = `${phrases.length} phrase${phrases.length === 1 ? "" : "s"}`;
+    count.textContent = `${phrases.length}개`;
 
     header.append(overline, count);
     group.appendChild(header);
@@ -341,27 +341,27 @@ function renderDetail(atom) {
   const topPrediction = atom.predictions?.[0] ?? null;
   const view = atom.view ?? {};
 
-  els.detailTitle.textContent = `atom ${atom.atom}`;
-  els.detailLocation.textContent = `${sectionLabel(atom.section)} · ${atom.book ?? "-"} · gold relation ${atom.gold_relation ?? "-"}`;
+  els.detailTitle.textContent = `절원자 ${atom.atom}`;
+  els.detailLocation.textContent = `${sectionLabel(atom.section)} · ${atom.book ?? "-"} · 정답 관계 ${atom.gold_relation ?? "-"}`;
   els.detailText.textContent = atom.text || view.text || "-";
 
   if (atom.gold_mother === null || atom.gold_mother === undefined) {
-    els.detailGold.textContent = "root";
+    els.detailGold.textContent = "최상위 절(root)";
   } else {
-    els.detailGold.textContent = `${atom.gold_mother} ${atom.gold_mother_text ? `· ${atom.gold_mother_text}` : ""}`;
+    els.detailGold.textContent = `어미절 ${atom.gold_mother}${atom.gold_mother_text ? ` · ${atom.gold_mother_text}` : ""}`;
   }
 
   els.detailSummary.textContent = topPrediction
-    ? `mother ${topPrediction.mother} · ${scoreLabel(topPrediction.score)} · ${topPrediction.predicted_rela ?? "relation ?"}`
+    ? `어미절 ${topPrediction.mother} · 점수 ${scoreLabel(topPrediction.score)} · 관계 ${topPrediction.predicted_rela ?? "미상"}`
     : "예측 후보가 없습니다.";
 
   clearElement(els.detailBadges);
   const badges = [
-    `atom ${atom.atom}`,
+    `절원자 ${atom.atom}`,
     atom.book ?? "-",
     `tab ${view.tab ?? "-"}`,
-    `instruction ${view.instruction ?? "--"}`,
-    `${atom.predictions?.length ?? 0} candidates`,
+    `지시 ${view.instruction ?? "--"}`,
+    `${atom.predictions?.length ?? 0}개 후보`,
   ];
   for (const label of badges) {
     els.detailBadges.appendChild(makeToken(label, "badge"));
@@ -373,15 +373,15 @@ function renderDetail(atom) {
   renderCandidates(atom.predictions ?? []);
   els.detailContextLocation.textContent = sectionLabel(atom.section);
   els.detailContextPool.textContent = fmtNumber(atom.pool_size ?? 0);
-  els.detailContextNav.textContent = `${atom.prev_atom ?? "root"} / ${atom.next_atom ?? "end"}`;
+  els.detailContextNav.textContent = `${atom.prev_atom ?? "시작"} / ${atom.next_atom ?? "끝"}`;
   els.detailContextTopk.textContent = fmtNumber(atom.predictions?.length ?? 0);
   const noteParts = [
-    view.explicit_subject ? "explicit subject" : null,
-    view.has_fronting ? "fronting" : null,
-    view.question_marked ? "question marked" : null,
-    view.relative_marker ? `relative ${view.relative_marker}` : null,
-    view.opening_conjunction_lexemes?.length ? `opening conj ${view.opening_conjunction_lexemes.join(", ")}` : null,
-    view.opening_preposition_lexemes?.length ? `opening prep ${view.opening_preposition_lexemes.join(", ")}` : null,
+    view.explicit_subject ? "명시적 주어" : null,
+    view.has_fronting ? "전위" : null,
+    view.question_marked ? "의문 표지" : null,
+    view.relative_marker ? `관계 ${view.relative_marker}` : null,
+    view.opening_conjunction_lexemes?.length ? `도입 접속사 ${view.opening_conjunction_lexemes.join(", ")}` : null,
+    view.opening_preposition_lexemes?.length ? `도입 전치사 ${view.opening_preposition_lexemes.join(", ")}` : null,
   ].filter(Boolean);
   els.detailContextNote.textContent = noteParts.join(" · ") || "추가 메모가 없습니다.";
   renderUrl(atom.atom);
@@ -391,7 +391,7 @@ function renderDetail(atom) {
 function renderCandidates(predictions) {
   clearElement(els.candidateList);
   if (!predictions.length) {
-    renderStatusBlock(els.candidateList, "표시할 candidate가 없습니다.");
+    renderStatusBlock(els.candidateList, "표시할 후보가 없습니다.");
     els.candidateSummary.textContent = "후보가 없습니다.";
     return;
   }
@@ -399,9 +399,9 @@ function renderCandidates(predictions) {
   const maxScore = Math.max(...predictions.map((candidate) => Number(candidate.score) || 0), 1);
   const goldText =
     state.currentAtom?.gold_mother === null || state.currentAtom?.gold_mother === undefined
-      ? "root"
-      : `mother ${state.currentAtom.gold_mother}`;
-  els.candidateSummary.textContent = `${predictions.length} candidates · pool ${fmtNumber(state.currentAtom?.pool_size ?? 0)} · gold ${goldText}`;
+      ? "최상위 절(root)"
+      : `어미절 ${state.currentAtom.gold_mother}`;
+  els.candidateSummary.textContent = `${predictions.length}개 후보 · 후보군 ${fmtNumber(state.currentAtom?.pool_size ?? 0)} · 정답 ${goldText}`;
 
   predictions.forEach((candidate, index) => {
     const clickable = state.atomIndex.has(String(candidate.mother));
@@ -422,7 +422,7 @@ function renderCandidates(predictions) {
     const top = document.createElement("div");
     top.className = "candidate-top";
     const title = document.createElement("strong");
-    title.textContent = `#${index + 1} mother ${candidate.mother}`;
+    title.textContent = `#${index + 1} 어미절 ${candidate.mother}`;
     const score = document.createElement("span");
     score.className = "candidate-score";
     score.textContent = scoreLabel(candidate.score);
@@ -445,19 +445,19 @@ function renderCandidates(predictions) {
     labels.className = "candidate-labels";
     const labelsToRender = candidateLabel(candidate);
     if (candidate.is_gold) {
-      labelsToRender.push("gold");
+      labelsToRender.push("정답");
     }
     for (const label of labelsToRender) {
       labels.appendChild(makeToken(label, "pill"));
     }
     if (clickable) {
-      labels.appendChild(makeToken("open mother atom", "pill"));
+      labels.appendChild(makeToken("어미절 열기", "pill"));
     }
 
     const evidence = document.createElement("div");
     evidence.className = "evidence-list";
     for (const ev of candidate.evidences ?? []) {
-      evidence.appendChild(makeToken(ev.label ?? "evidence", "evidence"));
+      evidence.appendChild(makeToken(ev.label ?? "근거", "evidence"));
     }
 
     card.append(top, meta, meter, labels, evidence);
@@ -478,13 +478,13 @@ async function openAtom(atomId) {
   const atomKey = String(atomId);
   const catalogRow = state.atomIndex.get(atomKey);
   if (!catalogRow) {
-    setStatus(`clause atom ${atomId} 을(를) 찾지 못했습니다.`);
+    setStatus(`절원자 ${atomId} 을(를) 찾지 못했습니다.`);
     return;
   }
 
   els.atomInput.value = atomKey;
   els.bookSelect.value = catalogRow.book_slug;
-  setStatus(`clause atom ${atomKey} 를 불러오는 중...`);
+  setStatus(`절원자 ${atomKey} 를 불러오는 중...`);
   const requestSeq = ++state.requestSeq;
 
   let atom;
@@ -492,7 +492,7 @@ async function openAtom(atomId) {
     atom = await loadAtom(atomKey);
   } catch (error) {
     console.error(error);
-    setStatus(`clause atom ${atomKey} 상세 JSON을 불러오지 못했습니다.`);
+    setStatus(`절원자 ${atomKey} 상세 JSON을 불러오지 못했습니다.`);
     return;
   }
   if (requestSeq !== state.requestSeq) {
@@ -501,7 +501,7 @@ async function openAtom(atomId) {
 
   renderBookList(catalogRow.book_slug, atomKey);
   renderDetail(atom);
-  setStatus(`clause atom ${atomKey} 를 표시 중입니다.`);
+  setStatus(`절원자 ${atomKey} 를 표시 중입니다.`);
 }
 
 async function syncBookSelection(bookSlug) {
@@ -586,7 +586,7 @@ async function init() {
     buildIndexes();
     populateBooks();
 
-    setMetaStatus(`generated ${meta.generated_at} · ${fmtNumber(meta.atom_count ?? catalog.atoms.length)} atoms · top-k ${meta.top_k}`);
+    setMetaStatus(`생성 ${meta.generated_at} · ${fmtNumber(meta.atom_count ?? catalog.atoms.length)}개 절원자 · 상위 ${meta.top_k}개 후보`);
 
     const requestedAtom = params.get("atom");
     const requestedBook = params.get("book");
@@ -623,7 +623,7 @@ async function init() {
   els.openButton.addEventListener("click", async () => {
     const atomId = currentAtomId();
     if (atomId === null) {
-      setStatus("유효한 clause atom ID를 입력하세요.");
+      setStatus("유효한 절원자 ID를 입력하세요.");
       return;
     }
     await openAtom(atomId);

@@ -1,73 +1,73 @@
-# BHSA Clause Atom Observatory
+# BHSA 절원자 어미절 후보 관측소
 
-This redesign was shaped with the workflows from `frontend-skill`, `figma-use`, `figma-generate-design`, and `figma-create-design-system-rules`.
+이 리디자인은 `frontend-skill`, `figma-use`, `figma-generate-design`, `figma-create-design-system-rules` 흐름을 기준으로 정리했습니다.
 
-## Visual Thesis
+## 시각적 핵심
 
-The site should feel like a research table laid out for textual judgment:
+사이트는 본문 판단을 위한 연구용 책상처럼 느껴져야 합니다.
 
-- a dark outer shell that frames the work
-- a warm folio stage for the selected clause atom
-- a ranked evidence board for mother candidates
+- 바깥쪽의 어두운 껍질
+- 선택된 절원자를 읽는 따뜻한 본문 면
+- 어미절 후보를 비교하는 근거 보드
 
-The goal is not "pretty dashboard polish." The goal is a reading environment where the clause text, relation signals, and ranking evidence become easier to judge quickly.
+목표는 보기 좋은 대시보드가 아니라, 본문과 관계 표식, 후보 근거를 더 빨리 판단하게 돕는 읽기 환경입니다.
 
-## Information Architecture
+## 정보 구조
 
-### 1. Command Layer
+### 1. 조작 레이어
 
-The top control surface must let a researcher change book, jump to an atom, and move sequentially without scrolling into the detail panes.
+상단 조작 영역에서는 연구자가 책을 바꾸고, 절원자 ID로 바로 이동하고, 이전/다음으로 순차 탐색할 수 있어야 합니다.
 
-### 2. Book Ledger
+### 2. 책별 목록
 
-The left rail is a ledger of clause atoms for the selected book. Each row should show:
+왼쪽 패널은 선택한 책의 절원자 목록입니다. 각 줄에는 다음이 보여야 합니다.
 
-- atom id
-- section reference
-- clause text snippet
-- top prediction cue
+- 절원자 ID
+- 구절 위치
+- 본문 조각
+- 1위 예측 신호
 
-This list is for orientation, not deep reading.
+이 목록은 깊이 읽기보다 방향을 잡기 위한 영역입니다.
 
-### 3. Focus Folio
+### 3. 본문 판독 영역
 
-The center column is the primary reading stage. It must show:
+가운데 열은 핵심 읽기 영역입니다. 다음 정보가 보여야 합니다.
 
-- selected atom id and location
-- clause text with strong typographic weight
-- gold mother
-- top hypothesis
-- compact clause profile markers
+- 선택된 절원자 ID와 위치
+- 강한 타이포그래피로 보여 주는 본문
+- 정답 어미절
+- 최상위 예측
+- 짧은 절 표식 요약
 
-### 4. Clause Anatomy
+### 4. 절 구조
 
-Predicate information and phrase grouping should sit below the main text, organized into:
+서술어 정보와 구문 그룹은 본문 아래에 두고 다음 구조로 나눕니다.
 
-- predicate and verb morphology
-- opening phrases
-- preverbal phrases
-- postverbal phrases
-- leftover phrases not captured by those groups
+- 서술어와 동사 형태 정보
+- 도입 구
+- 서술어 앞 구
+- 서술어 뒤 구
+- 위 구분에 들어가지 않는 기타 구
 
-### 5. Candidate Board
+### 5. 후보 비교판
 
-The right rail is a ranked mother-candidate board. Each entry should show:
+오른쪽 패널은 어미절 후보 순위판입니다. 각 항목에는 다음이 보여야 합니다.
 
-- rank
-- mother atom id
-- score
-- relation labels
-- evidence tags
+- 순위
+- 어미절 ID
+- 점수
+- 관계 라벨
+- 근거 태그
 
-When possible, candidate cards should jump directly to the mother atom.
+가능하면 후보 카드는 바로 해당 어미절로 이동할 수 있어야 합니다.
 
-## Implementation Rules
+## 구현 규칙
 
-- Keep the existing static JSON contract.
-- Prefer structural sections over generic repeated cards.
-- Use a restrained motion system:
-  - subtle rise on hover
-  - short entry motion for candidates
-  - no decorative idle animation
-- Let typography and contrast create emphasis before adding color.
-- Treat evidence tags as the smallest unit of judgment, so they must remain compact and readable.
+- 기존 정적 JSON 계약은 유지합니다.
+- 반복 카드보다 구조가 드러나는 섹션 구성을 우선합니다.
+- 모션은 절제해서 씁니다.
+  - 호버 시 살짝 떠오르는 정도
+  - 후보 카드의 짧은 등장 애니메이션
+  - 장식용 반복 애니메이션은 금지
+- 색보다 타이포그래피와 대비로 위계를 먼저 만듭니다.
+- 근거 태그는 판단의 최소 단위이므로 작아도 읽기 쉬워야 합니다.
