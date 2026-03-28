@@ -13,6 +13,42 @@ const state = {
 
 const els = {};
 
+const CODE_LABELS = {
+  typ: "절 유형",
+  tab: "배열 코드",
+  sub1: "하위 분류 1",
+  sub2: "하위 분류 2",
+  instruction: "후보군 규칙",
+  lex: "어휘형",
+  vt: "동사 시제",
+  vs: "동사 어간",
+  ps: "인칭",
+  nu: "수",
+  gn: "성",
+  prs: "접미 대명사",
+  prs_ps: "접미 대명사 인칭",
+  prs_nu: "접미 대명사 수",
+  prs_gn: "접미 대명사 성",
+};
+
+const CODE_DESCRIPTIONS = {
+  typ: "절의 큰 유형을 가리키는 BHSA/ETCBC 원본 코드입니다.",
+  tab: "절이 문맥 안에서 어떻게 배열되는지 보여 주는 원본 코드입니다.",
+  sub1: "절 분류의 1차 하위 범주를 나타내는 원본 코드입니다.",
+  sub2: "절 분류의 2차 하위 범주를 나타내는 원본 코드입니다.",
+  instruction: "어미절 후보군을 만들 때 사용한 규칙 코드입니다.",
+  lex: "서술어의 기본 어휘형을 나타내는 원본 코드입니다.",
+  vt: "서술어의 동사 시제 관련 코드를 보여 줍니다.",
+  vs: "서술어의 동사 어간(stem) 코드를 보여 줍니다.",
+  ps: "서술어의 인칭(person) 코드를 보여 줍니다.",
+  nu: "서술어의 수(number) 코드를 보여 줍니다.",
+  gn: "서술어의 성(gender) 코드를 보여 줍니다.",
+  prs: "접미 대명사(pronominal suffix) 코드를 보여 줍니다.",
+  prs_ps: "접미 대명사의 인칭 코드를 보여 줍니다.",
+  prs_nu: "접미 대명사의 수 코드를 보여 줍니다.",
+  prs_gn: "접미 대명사의 성 코드를 보여 줍니다.",
+};
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -76,6 +112,14 @@ function makeToken(text, className) {
   span.className = className;
   span.textContent = text;
   return span;
+}
+
+function codeLabel(key) {
+  return CODE_LABELS[key] ?? key;
+}
+
+function codeDescription(key) {
+  return CODE_DESCRIPTIONS[key] ?? "원본 기술 코드를 그대로 보여 주는 항목입니다.";
 }
 
 function renderStatusBlock(container, message) {
@@ -198,9 +242,9 @@ function renderFlags(atom) {
   clearElement(els.detailFlags);
   const view = atom.view ?? {};
   const flags = [
-    view.typ ? `typ ${view.typ}` : null,
-    view.sub1 ? `sub1 ${view.sub1}` : null,
-    view.sub2 && view.sub2 !== "." ? `sub2 ${view.sub2}` : null,
+    view.typ ? `절 유형 ${view.typ}` : null,
+    view.sub1 ? `하위 분류 1 ${view.sub1}` : null,
+    view.sub2 && view.sub2 !== "." ? `하위 분류 2 ${view.sub2}` : null,
     view.instruction ? `지시 ${view.instruction}` : null,
     view.explicit_subject ? "명시적 주어" : null,
     view.has_fronting ? "전위" : null,
@@ -248,22 +292,90 @@ function renderPredicate(view) {
       tile.className = "predicate-metric";
       const labelNode = document.createElement("span");
       labelNode.className = "metric-label";
-      labelNode.textContent = label;
+      labelNode.textContent = codeLabel(label);
+      const codeNode = document.createElement("span");
+      codeNode.className = "metric-code";
+      codeNode.textContent = label;
       const valueNode = document.createElement("span");
       valueNode.className = "metric-value";
       valueNode.textContent = String(value);
-      tile.append(labelNode, valueNode);
+      tile.append(labelNode, codeNode, valueNode);
       els.predicateCard.appendChild(tile);
     }
   }
 
   const summaryParts = [
     view?.predicate?.lex ? `서술어 ${view.predicate.lex}` : "서술어 -",
-    view?.tab ? `tab ${view.tab}` : null,
-    view?.sub1 ? `sub1 ${view.sub1}` : null,
-    view?.sub2 && view.sub2 !== "." ? `sub2 ${view.sub2}` : null,
+    view?.tab ? `배열 ${view.tab}` : null,
+    view?.sub1 ? `하위 분류 1 ${view.sub1}` : null,
+    view?.sub2 && view.sub2 !== "." ? `하위 분류 2 ${view.sub2}` : null,
   ].filter(Boolean);
   els.predicateSummary.textContent = summaryParts.join(" · ");
+}
+
+function renderCodeGuide(view) {
+  clearElement(els.codeGuide);
+  const predicate = view?.predicate ?? null;
+  const entries = [
+    view?.typ ? ["typ", view.typ] : null,
+    view?.tab ? ["tab", view.tab] : null,
+    view?.sub1 ? ["sub1", view.sub1] : null,
+    view?.sub2 && view.sub2 !== "." ? ["sub2", view.sub2] : null,
+    view?.instruction ? ["instruction", view.instruction] : null,
+    predicate?.lex ? ["lex", predicate.lex] : null,
+    predicate?.vt ? ["vt", predicate.vt] : null,
+    predicate?.vs ? ["vs", predicate.vs] : null,
+    predicate?.ps ? ["ps", predicate.ps] : null,
+    predicate?.nu ? ["nu", predicate.nu] : null,
+    predicate?.gn ? ["gn", predicate.gn] : null,
+    predicate?.prs ? ["prs", predicate.prs] : null,
+    predicate?.prs_ps ? ["prs_ps", predicate.prs_ps] : null,
+    predicate?.prs_nu ? ["prs_nu", predicate.prs_nu] : null,
+    predicate?.prs_gn ? ["prs_gn", predicate.prs_gn] : null,
+  ].filter(Boolean);
+
+  if (!entries.length) {
+    renderStatusBlock(els.codeGuide, "설명할 기술 코드가 없습니다.");
+    return;
+  }
+
+  const intro = document.createElement("p");
+  intro.className = "code-guide-intro";
+  intro.textContent = "아래 값은 BHSA/ETCBC 원본 표식을 그대로 보여 주며, 각 항목이 무엇을 뜻하는지 짧게 설명합니다.";
+  els.codeGuide.appendChild(intro);
+
+  const grid = document.createElement("div");
+  grid.className = "code-guide-grid";
+
+  for (const [key, value] of entries) {
+    const item = document.createElement("article");
+    item.className = "code-guide-item";
+
+    const head = document.createElement("div");
+    head.className = "code-guide-head";
+
+    const title = document.createElement("strong");
+    title.textContent = codeLabel(key);
+
+    const raw = document.createElement("span");
+    raw.className = "code-guide-key";
+    raw.textContent = key;
+
+    head.append(title, raw);
+
+    const current = document.createElement("p");
+    current.className = "code-guide-value";
+    current.textContent = `현재 값: ${value}`;
+
+    const description = document.createElement("p");
+    description.className = "code-guide-description";
+    description.textContent = codeDescription(key);
+
+    item.append(head, current, description);
+    grid.appendChild(item);
+  }
+
+  els.codeGuide.appendChild(grid);
 }
 
 function renderPhraseGroups(view) {
@@ -359,8 +471,8 @@ function renderDetail(atom) {
   const badges = [
     `절원자 ${atom.atom}`,
     atom.book ?? "-",
-    `tab ${view.tab ?? "-"}`,
-    `지시 ${view.instruction ?? "--"}`,
+    `배열 ${view.tab ?? "-"}`,
+    `후보군 규칙 ${view.instruction ?? "--"}`,
     `${atom.predictions?.length ?? 0}개 후보`,
   ];
   for (const label of badges) {
@@ -369,6 +481,7 @@ function renderDetail(atom) {
 
   renderFlags(atom);
   renderPredicate(view);
+  renderCodeGuide(view);
   renderPhraseGroups(view);
   renderCandidates(atom.predictions ?? []);
   els.detailContextLocation.textContent = sectionLabel(atom.section);
@@ -564,6 +677,7 @@ async function init() {
   els.detailFlags = $("detail-flags");
   els.predicateSummary = $("predicate-summary");
   els.predicateCard = $("predicate-card");
+  els.codeGuide = $("code-guide");
   els.phraseGroups = $("phrase-groups");
   els.detailContextLocation = $("detail-context-location");
   els.detailContextPool = $("detail-context-pool");
