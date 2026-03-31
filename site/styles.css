@@ -429,11 +429,23 @@ button:disabled {
     repeating-linear-gradient(180deg, transparent 0 39px, rgba(24, 32, 38, 0.05) 39px 40px);
 }
 
+.text-stage-label {
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 .detail-text {
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "SBL Hebrew", "Ezra SIL", "Noto Serif Hebrew", "Source Serif 4", Georgia, serif;
   font-size: clamp(1.25rem, 2.2vw, 2rem);
   line-height: 1.5;
   color: var(--ink-strong);
+  direction: rtl;
+  unicode-bidi: plaintext;
+  text-align: right;
 }
 
 .insight-grid {
@@ -660,6 +672,19 @@ button:disabled {
   padding-right: 4px;
 }
 
+.ledger-head {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.9fr) minmax(96px, 0.9fr) minmax(0, 1.6fr) minmax(160px, 1.1fr);
+  gap: 10px;
+  padding: 0 14px 12px;
+  border-bottom: 1px solid rgba(255, 248, 238, 0.14);
+  margin-bottom: 12px;
+  color: var(--ink-inverse-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .atom-item {
   width: 100%;
   padding: 14px;
@@ -682,17 +707,46 @@ button:disabled {
   transform: translateY(-1px);
 }
 
-.atom-item-snippet {
-  margin-top: 8px;
-  color: var(--ink-inverse-soft);
+.ledger-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.9fr) minmax(96px, 0.9fr) minmax(0, 1.6fr) minmax(160px, 1.1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.ledger-cell {
+  min-width: 0;
   font-size: 0.9rem;
 }
 
-.atom-item-foot {
+.ledger-cell strong {
+  display: block;
+}
+
+.ledger-cell-section {
+  color: var(--ink-inverse-soft);
+  font-size: 0.84rem;
+}
+
+.hebrew-text {
+  font-family: "SBL Hebrew", "Ezra SIL", "Noto Serif Hebrew", "Source Serif 4", Georgia, serif;
+  direction: rtl;
+  unicode-bidi: plaintext;
+  text-align: right;
+}
+
+.ledger-cell-hebrew {
+  color: var(--ink-inverse);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ledger-cell-prediction {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 10px;
+  justify-content: flex-start;
 }
 
 .candidate-list {
@@ -824,6 +878,11 @@ button:disabled {
 
   .atom-list {
     max-height: none;
+  }
+
+  .ledger-head,
+  .ledger-row {
+    grid-template-columns: 1fr;
   }
 }
 

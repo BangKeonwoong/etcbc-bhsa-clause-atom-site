@@ -203,35 +203,38 @@ function renderBookList(bookSlug, activeId = null) {
     button.setAttribute("aria-current", String(atomId) === String(activeId) ? "true" : "false");
     button.addEventListener("click", () => openAtom(atomId));
 
-    const header = document.createElement("div");
-    header.className = "atom-item-head";
+    const row = document.createElement("div");
+    row.className = "ledger-row";
 
+    const atomCell = document.createElement("div");
+    atomCell.className = "ledger-cell ledger-cell-atom";
     const atomLabel = document.createElement("strong");
     atomLabel.textContent = `절원자 ${atomId}`;
+    atomCell.appendChild(atomLabel);
 
-    const section = document.createElement("span");
-    section.textContent = sectionLabel(atom.section);
+    const sectionCell = document.createElement("div");
+    sectionCell.className = "ledger-cell ledger-cell-section";
+    sectionCell.textContent = sectionLabel(atom.section);
 
-    header.append(atomLabel, section);
+    const hebrewCell = document.createElement("div");
+    hebrewCell.className = "ledger-cell ledger-cell-hebrew hebrew-text";
+    hebrewCell.textContent = atom.text || "-";
 
-    const snippet = document.createElement("p");
-    snippet.className = "atom-item-snippet";
-    snippet.textContent = atom.text || "-";
-
-    const footer = document.createElement("div");
-    footer.className = "atom-item-foot";
+    const predictionCell = document.createElement("div");
+    predictionCell.className = "ledger-cell ledger-cell-prediction";
     const prediction = atom.top_prediction;
     if (prediction) {
-      footer.append(
+      predictionCell.append(
         makeToken(`어미 ${prediction.mother}`, "mini-badge"),
         makeToken(prediction.predicted_rela ?? "관계 미상", "mini-badge"),
         makeToken(scoreLabel(prediction.score), "mini-badge"),
       );
     } else {
-      footer.append(makeToken("예측 없음", "mini-badge"));
+      predictionCell.append(makeToken("예측 없음", "mini-badge"));
     }
 
-    button.append(header, snippet, footer);
+    row.append(atomCell, sectionCell, hebrewCell, predictionCell);
+    button.append(row);
     els.atomList.appendChild(button);
   }
 
